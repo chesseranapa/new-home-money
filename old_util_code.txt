@@ -1,0 +1,26 @@
+public class Main {
+    public static void main(String[] args) {
+        try {
+            Connection conn = DriverManager.getConnection
+                    ("jdbc:ucanaccess://C:/temp/money_eng.mdb", null, null);
+
+
+            Statement statement = conn.createStatement();
+            //statement.execute("INSERT INTO  vidi_prihoda (id_vid_prihod, vid_prihod, activ) VALUES (62, 'Компенсация от Дианы', false)");
+            ResultSet resultQuery = statement.executeQuery
+                    ("SELECT id_vid_prihod, vid_prihod, activ FROM  vidi_prihoda");
+
+            while (resultQuery.next()) {
+                System.out.println(resultQuery.getInt(1)
+                        + "; "
+                        + resultQuery.getString(2)
+                        + "; " + resultQuery.getBoolean(3));
+
+            }
+            resultQuery.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
