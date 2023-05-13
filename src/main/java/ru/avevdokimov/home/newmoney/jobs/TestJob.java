@@ -50,11 +50,11 @@ public class TestJob {
     //@Scheduled(initialDelayString = "1000", fixedRateString = "3600000")
     public void testJob3() {
         Logger.getLogger("TestLog").info("start job3");
-        List<AccessTransactions> list =  moneyFromAccessDaoImp.getTransactionListGtIdRec(43000L);
+        List<AccessTransactions> list =  moneyFromAccessDaoImp.getTransactionListGtIdRec(46000L);
         for (AccessTransactions vid: list) {
             if (kindOfExpenditureDaoImp.findById(vid.getKredit()) != null
                     && kindOfIncomeDaoImp.findById(vid.getDebet()) != null) {
-                if (vid.getId() > 43000) {
+                if (vid.getId() > 46000) {
                     Transactions transactions = new Transactions(
                             vid.getId(),
                             kindOfExpenditureDaoImp.findById(vid.getKredit()),
@@ -89,5 +89,15 @@ public class TestJob {
             Logger.getLogger("TestLog").info(Double.toString(transactionsDaoImp.getSummaByExpenditure(kind.getId()) - transactionsDaoImp.getSummaByIncomee(kind.getId())));
         }
         Logger.getLogger("TestLog").info("Итого: " + Double.toString(summa));
+    }
+
+    @Scheduled(initialDelayString = "1000", fixedRateString = "60000")
+    public void testJob5() {
+/*        moneyFromAccessDaoImp.getKindExpenditureList().forEach(e -> Logger.getLogger("OutLog")
+                .info(e.toString()));
+        moneyFromAccessDaoImp.getKindIncomeList().forEach(e -> Logger.getLogger("InLog")
+                .info(e.toString()));*/
+/*        moneyFromAccessDaoImp.insertPrihod(63, "'OzonKartaLeha'", 1);
+        Logger.getLogger("InsertLog").info("ok");*/
     }
 }

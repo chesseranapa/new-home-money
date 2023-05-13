@@ -13,4 +13,5 @@ public interface MoneyFromAccessDao {
     List<AccessVidPrihod> getKindIncomeList();
     List<AccessTransactions> getTransactionList();
     List<AccessTransactions> getTransactionListGtIdRec(Long idRec);
+    boolean insertPrihod(int idPrihod, String kindPrihod, int visible);
 }

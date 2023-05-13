@@ -2,6 +2,7 @@ package ru.avevdokimov.home.newmoney.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import ru.avevdokimov.home.newmoney.model.AccessTransactions;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 @Data
 @AllArgsConstructor
+@Slf4j
 public class MoneyFromAccessDaoImp implements MoneyFromAccessDao {
     private static final String SQL_FROM_RASHOD = "SELECT id_vid_rashod, vid_rashod  FROM  vidi_rashoda";
     private static final String SQL_FROM_PRIVOD = "SELECT id_vid_prihod, vid_prihod, activ  FROM  vidi_prihoda";
@@ -34,6 +36,8 @@ public class MoneyFromAccessDaoImp implements MoneyFromAccessDao {
             "prim  " +
             "FROM  provodki " +
             "WHERE id_rec > ?";
+
+    private static final String SQL_INSERT_PRIHOD = "INSERT INTO vidi_prihoda (id_vid_prihod, vid_prihod, activ) VALUES (%d, %s, %b)";
     private final JdbcTemplate jdbcTemplateAccess;
 
     @Override
@@ -44,6 +48,17 @@ public class MoneyFromAccessDaoImp implements MoneyFromAccessDao {
     @Override
     public List<AccessVidPrihod> getKindIncomeList() {
         return jdbcTemplateAccess.query(SQL_FROM_PRIVOD, (r, i)->new AccessVidPrihod(r.getLong(1), r.getString(2), r.getBoolean(3)));
+    }
+
+    @Override
+    public boolean insertPrihod(int idPrihod, String kindPrihod, int visible) {
+        try {
+            jdbcTemplateAccess.execute(String.format(SQL_INSERT_PRIHOD, idPrihod, kindPrihod, visible));
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return false;
+        }
     }
 
     @Override
